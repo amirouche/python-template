@@ -1,0 +1,35 @@
+name: Continuous Integration
+
+on:
+    push:
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - 3.9
+          - "3.10"
+          - "3.11"
+          # - "3.12" # it is still early, first released 2023-09-19.
+          - pypy-3.9
+          - pypy-3.10
+        os:
+          - ubuntu-latest
+    runs-on:  ${{ matrix.os }}
+    name: ${{ matrix.python-version }} on ${{ matrix.os }}
+    steps:
+      - run: gh repo clone $GITHUB_REPOSITORY -- --depth=1
+      - run: cd $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) && git checkout $GITHUB_SHA
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+           python-version: ${{ matrix.python-version }}
+           architecture: x64
+      - run: python --version
+      - run: cd $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) && make init
+      - run: cd $(echo $GITHUB_REPOSITORY | cut -d'/' -f2) && make check

@@ -6,7 +6,7 @@ help: ## This help.
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 
 init: ## Prepare the host sytem for development
-	pip install -r requirements.txt
+	pip install -r requirements.txt -r requirements.dev.txt
 	@echo "\033[95m\n\nYou may now run 'make check'.\n\033[0m"
 
 check: ## Run tests
