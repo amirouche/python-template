@@ -23,3 +23,7 @@ async def uvicorn(scope, receive, send):
             "body": b"Hello, hacker, and happy hacking!",
         }
     )
+
+
+def test_success():
+    assert True
