@@ -51,6 +51,6 @@ release: ## Release package on pypi
 	rm -rf dist
 	make lock
 	make init
-	make check-only
+	make check
 	python3 -m build
 	python3 -m twine upload dist/*
